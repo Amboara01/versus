@@ -47,17 +47,28 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  if (
-    request.nextUrl.pathname !== "/" &&
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const protectedRoutes = [
+    '/',
+    '/protected',
+    '/dashboard'
+  ];
+  const guestOnlyRoutes = [
+    '/auth/login',
+    '/auth/sign-up',
+  ]
+
+  const isProtected = protectedRoutes.some(url => request.nextUrl.pathname == url)
+  const isGuestOnly = guestOnlyRoutes.some(url => request.nextUrl.pathname == url)
+  if(!user && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
+  } else if(user && isGuestOnly) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
   }
+
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
