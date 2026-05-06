@@ -59,12 +59,12 @@ export async function updateSession(request: NextRequest) {
 
   const isProtected = protectedRoutes.some(url => request.nextUrl.pathname == url)
   const isGuestOnly = guestOnlyRoutes.some(url => request.nextUrl.pathname == url)
-  if(!user && isProtected) {
-    const url = request.nextUrl.clone();
+  const url = request.nextUrl.clone();
+
+  if (!user && isProtected) {
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
-  } else if(user && isGuestOnly) {
-    const url = request.nextUrl.clone();
+  } else if (user && isGuestOnly) {
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
