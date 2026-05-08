@@ -1,9 +1,19 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { ChevronDownIcon } from 'lucide-react'
+import { Calendar } from '@/components/ui/calendar'
+import { useState } from 'react'
+import { format } from 'date-fns'
 
 const NewTournamentForm = () => {
+    const [date, setDate] = useState<Date>()
+
     return (
         <form>
             <div className='mb-8 space-y-2'>
@@ -16,11 +26,11 @@ const NewTournamentForm = () => {
 
             <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
                 <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-first-name'>Title</Label>
-                    <Input id='multi-step-personal-info-first-name' placeholder='World Chess Championship' />
+                    <Label htmlFor='title'>Title</Label>
+                    <Input id='title' placeholder='World Chess Championship' />
                 </div>
                 <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-last-name'>Host</Label>
+                    <Label htmlFor='type'>Type</Label>
                     <Select>
                         <SelectTrigger className='w-full'>
                             <SelectValue placeholder="Elimination Type" />
@@ -35,28 +45,36 @@ const NewTournamentForm = () => {
                     </Select>
                 </div>
                 <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-mobile'>Mobile</Label>
-                    <Input id='multi-step-personal-info-mobile' placeholder='+1 (555) 123-4567' />
+                    <Label htmlFor='game'>Game</Label>
+                    <Input id='game' placeholder='Chess, Basketball, Dota 2' />
                 </div>
                 <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-pincode'>Pincode</Label>
-                    <Input id='multi-step-personal-info-pincode' placeholder='Postal Code' />
+                    <Label htmlFor='scheduled_at'>Starts at</Label>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                id='scheduled_at'
+                                variant="outline"
+                                data-empty={!date}
+                                className="w-full justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                            >
+                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                <ChevronDownIcon />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                                mode="single"
+                                selected={date}
+                                onSelect={setDate}
+                                defaultMonth={date}
+                            />
+                        </PopoverContent>
+                    </Popover>
                 </div>
                 <div className='flex flex-col items-start gap-2 sm:col-span-2'>
-                    <Label htmlFor='multi-step-personal-info-address'>Address</Label>
-                    <Input id='multi-step-personal-info-address' placeholder='123 Main St' />
-                </div>
-                <div className='flex flex-col items-start gap-2 sm:col-span-2'>
-                    <Label htmlFor='multi-step-personal-info-landmark'>Landmark</Label>
-                    <Input id='multi-step-personal-info-landmark' placeholder='Near Central Park, New York' />
-                </div>
-                <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-city'>City</Label>
-                    <Input id='multi-step-personal-info-city' placeholder='New York' />
-                </div>
-                <div className='flex flex-col items-start gap-2'>
-                    <Label htmlFor='multi-step-personal-info-state'>State</Label>
-                    <Input id='multi-step-personal-info-state' placeholder='NY' />
+                    <Label htmlFor='description'>Description</Label>
+                    <Textarea id='description' placeholder='Tell us more about this championship'></Textarea>
                 </div>
             </div>
 
