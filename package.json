@@ -15,6 +15,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@tailwindcss/postcss": "^4.2.4",
+    "@tanstack/react-table": "^8.21.3",
     "brackets-manager": "^1.9.1",
     "brackets-memory-db": "^1.0.5",
     "brackets-viewer": "^1.9.0",
