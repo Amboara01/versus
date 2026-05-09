@@ -70,6 +70,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           format: string
+          game: string | null
           host_id: string
           id: string
           max_participants: number | null
@@ -82,6 +83,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           format: string
+          game?: string | null
           host_id: string
           id?: string
           max_participants?: number | null
@@ -94,6 +96,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           format?: string
+          game?: string | null
           host_id?: string
           id?: string
           max_participants?: number | null
