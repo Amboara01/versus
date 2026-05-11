@@ -1,15 +1,11 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { formatLabel } from '@/utils/tournaments'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { EyeIcon } from 'lucide-react'
-
-const ELIMINATION_TYPES: Record<string, string> = {
-    'single_elimination': 'Single Elimination',
-    'double_elimination': 'Double Elimination',
-    'round_robin': 'Round Robin',
-}
+import Link from 'next/link'
 
 export type TournamentRow = {
     id: string
@@ -28,9 +24,7 @@ export const columns: ColumnDef<TournamentRow>[] = [
         header: 'Elimination type',
         cell: ({ row }) => {
             const format: string = row.getValue('format')
-            if(format in ELIMINATION_TYPES)
-                return ELIMINATION_TYPES[format]
-            return 'Type Invalide.'
+            return formatLabel(format)
         }
     },
     {
@@ -40,10 +34,16 @@ export const columns: ColumnDef<TournamentRow>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => (
-            <Button variant='outline'>
-                <EyeIcon></EyeIcon>
-            </Button>
-        )
+        cell: ({ row }) => {
+            const tournament = row.original
+
+            return (
+                <Link href={`/tournaments/${tournament.id}`}>
+                    <Button variant='outline'>
+                        <EyeIcon></EyeIcon>
+                    </Button>
+                </Link>
+            )
+        }
     }
 ]
