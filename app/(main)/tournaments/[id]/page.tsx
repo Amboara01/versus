@@ -1,11 +1,11 @@
 import { Suspense } from "react"
-import TournamentCard from "./card"
+import { TournamentDetailsContent } from "./details"
 
 export default async function TournamentDetails({ params }: { params: Promise<{id: string}>}) {
     return (
         <>
             <Suspense fallback="Loading...">
-                <TournamentCard params={params}></TournamentCard>
+                <TournamentDetailsContent params={params} />
             </Suspense>
         </>
     )

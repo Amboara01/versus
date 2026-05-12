@@ -1,37 +1,36 @@
+import { launchTournament } from "@/app/actions/tournaments";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/lib/supabase/server";
+import { Button } from "@/components/ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Database } from "@/lib/database.types";
 import { formatLabel } from "@/utils/tournaments";
 import { format } from "date-fns";
 import { CalendarIcon, Dice5Icon, SwordsIcon, UsersRoundIcon } from "lucide-react";
+import LaunchDialog from "./launch-dialog";
 
-export default async function TournamentCard({ params }: { params: Promise<{id: string}>}) {
-    const { id } = await params
-    const supabase = await createClient()
-    const { data, error } = await supabase
-        .from('tournament')
-        .select('title, game, format, bracket_data, scheduled_at, description, status')
-        .eq('id', id)
-    if (error) throw error
-    const tournament = data[0]
+type TournamentRow = Database['public']['Tables']['tournament']['Row']
 
+export default async function TournamentCard({ tournament, participants }: { tournament: TournamentRow, participants: any[] }) {
+    
     return (
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex justify-between">
+                    <CardTitle className="flex space-x-4 items-center">
                         <span>{tournament.title}</span>
                         <Badge>{tournament.status}</Badge>
                     </CardTitle>
                     <CardDescription>{tournament.description}</CardDescription>
+                    <CardAction>
+                        <LaunchDialog tournament={tournament} participants={participants}/>
+                    </CardAction>
                 </CardHeader>
                 <CardContent>
                     <ul className="space-y-2">
                         <li className="flex space-x-2">
                             <UsersRoundIcon></UsersRoundIcon>
                             <span>
-                                {tournament.bracket_data ? -1 : 0}
-                                players
+                                { participants.length < 2 ? `${participants.length} player` : `${participants.length} players`}
                             </span>
                         </li>
                         <li className="flex space-x-2">
@@ -49,7 +48,7 @@ export default async function TournamentCard({ params }: { params: Promise<{id: 
                         <li className="flex space-x-2">
                             <CalendarIcon></CalendarIcon>
                             <span>
-                                { format(tournament.scheduled_at ? new Date(tournament.scheduled_at) : new Date(), 'PPP')}
+                                {format(tournament.scheduled_at ? new Date(tournament.scheduled_at) : new Date(), 'PPP')}
                             </span>
                         </li>
                     </ul>
