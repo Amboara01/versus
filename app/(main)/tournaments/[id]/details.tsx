@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import TournamentCard from "./card"
 import { ParticipantsCard } from "./participants"
+import BracketViewerCard from "./bracket"
 
 export async function TournamentDetailsContent({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -19,7 +20,8 @@ export async function TournamentDetailsContent({ params }: { params: Promise<{ i
     return (
         <div className="flex flex-col space-y-4">
             <TournamentCard tournament={tournament} participants={participants} />
-            <ParticipantsCard tournamentId={id} participants={participants}/>
+            <ParticipantsCard tournament={tournament} participants={participants}/>
+            { tournament?.status != 'draft' && <BracketViewerCard /> }
         </div>
     )
 }

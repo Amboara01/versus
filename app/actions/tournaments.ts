@@ -48,6 +48,6 @@ export async function launchTournament(tournament: TournamentRow, participants: 
     
     const data = await manager.get.tournamentData(tournament.id)
     const supabase = await createClient()
-    const { error } = await supabase.from('tournament').update({ bracket_data: data }).eq('id', tournament.id)
+    const { error } = await supabase.from('tournament').update({ bracket_data: data, status: 'active' }).eq('id', tournament.id)
     if(error) throw error
 }

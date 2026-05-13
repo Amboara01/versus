@@ -11,26 +11,30 @@ import LaunchDialog from "./launch-dialog";
 type TournamentRow = Database['public']['Tables']['tournament']['Row']
 
 export default async function TournamentCard({ tournament, participants }: { tournament: TournamentRow, participants: any[] }) {
-    
+
     return (
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex space-x-4 items-center">
+                    <CardTitle className="flex gap-4 items-center">
                         <span>{tournament.title}</span>
                         <Badge>{tournament.status}</Badge>
                     </CardTitle>
                     <CardDescription>{tournament.description}</CardDescription>
-                    <CardAction>
-                        <LaunchDialog tournament={tournament} participants={participants}/>
-                    </CardAction>
+                    {
+                        tournament.status == 'draft' ? (
+                            <CardAction>
+                                <LaunchDialog tournament={tournament} participants={participants} />
+                            </CardAction>
+                        ) : null
+                    }
                 </CardHeader>
                 <CardContent>
                     <ul className="space-y-2">
                         <li className="flex space-x-2">
                             <UsersRoundIcon></UsersRoundIcon>
                             <span>
-                                { participants.length < 2 ? `${participants.length} player` : `${participants.length} players`}
+                                {participants.length < 2 ? `${participants.length} player` : `${participants.length} players`}
                             </span>
                         </li>
                         <li className="flex space-x-2">

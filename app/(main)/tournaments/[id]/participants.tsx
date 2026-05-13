@@ -6,7 +6,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Button } from "@/components/ui/button";
 import DeleteDialog from "./delete-dialog";
 
-export function ParticipantsCard({ tournamentId, participants }: { tournamentId: string, participants: any }) {
+export function ParticipantsCard({ tournament, participants }: { tournament: { id: string, status: string }, participants: any }) {
     return (
         <Card className="p-4">
             {
@@ -17,7 +17,7 @@ export function ParticipantsCard({ tournamentId, participants }: { tournamentId:
                                 <p>
                                     A list of the tournament's participants
                                 </p>
-                                <AddParticipantDialog id={tournamentId} />
+                                { tournament.status == 'draft' && <AddParticipantDialog id={tournament.id} />}
                             </TableCaption>
                             <TableHeader>
                                 <TableRow>
@@ -33,7 +33,7 @@ export function ParticipantsCard({ tournamentId, participants }: { tournamentId:
                                                 {participant.participant.name}
                                             </TableCell>
                                             <TableCell className="flex justify-end">
-                                                <DeleteDialog id={participant.participant.id}/>
+                                                { tournament.status == 'draft' && <DeleteDialog id={participant.participant.id}/> }
                                             </TableCell>
                                         </TableRow>
                                     ))
@@ -51,7 +51,7 @@ export function ParticipantsCard({ tournamentId, participants }: { tournamentId:
                                 <EmptyDescription>There are no participants to this tournament yet. Please add some before launching it.</EmptyDescription>
                             </EmptyHeader>
                             <EmptyContent>
-                                <AddParticipantDialog id={tournamentId} />
+                                <AddParticipantDialog id={tournament.id} />
                             </EmptyContent>
                         </Empty>
                     )
