@@ -21,7 +21,7 @@ export async function TournamentDetailsContent({ params }: { params: Promise<{ i
         <div className="flex flex-col space-y-4">
             <TournamentCard tournament={tournament} participants={participants} />
             <ParticipantsCard tournament={tournament} participants={participants}/>
-            { tournament?.status != 'draft' && <BracketViewerCard /> }
+            { tournament?.status != 'draft' && <BracketViewerCard data={tournament?.bracket_data} /> }
         </div>
     )
 }

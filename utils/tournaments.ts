@@ -22,7 +22,7 @@ export function seed(participants: any[]) {
         if(remainder > 0) isPowerOfTwo++
         power++
     }
-    const size = isPowerOfTwo == 1 ? 2**(power-1) : 2*power
-    const seeding = [...participants].concat(new Array(size-numParticipants).fill(null))
+    const size = isPowerOfTwo == 1 ? 2**(power-1) : 2**power
+    const seeding = participants.map(p => p.participant.name).concat(new Array(size-numParticipants).fill(null))
     return { size, seeding }
 }
